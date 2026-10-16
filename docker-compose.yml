@@ -1,8 +1,7 @@
 services:
   web:
-     build: .
-     image: cicd-flask-app:latest
-     container_name: darshantechinnovations2006/cicd-flask-app
+     image: darshantechinnovations2006/cicd-flask-app:latest
+     container_name: cicd-flask-app
      ports:
         - "5000:5000"
      restart: unless-stopped
