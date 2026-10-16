@@ -8,7 +8,7 @@ def test_home():
 
   assert response.status_code == 200
   assert response.json == {
-      "message": "Hello! My CI/CD pipeline is working."
+      "message": "Hello! Darshan"
   }
 
 def test_health():
