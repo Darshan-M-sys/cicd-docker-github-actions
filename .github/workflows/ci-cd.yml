@@ -1,30 +1,42 @@
-name: Flask Application CI
+name: Flask Application CI/CD
 on:
-  push:
-    branches:
-    - main
-  pull_request:
-    branches:
-    - dev
+ push:
+   branches:
+     -main
+
+ pull_request:
+   branches:
+      -main
 
 jobs:
- test:
-   runs-on: ubuntu-latest
+    test:
+       runs-on: ubuntu-latest
+       steps:
+         - name: Checkout Repository
+           uses: actions/checkout@v4
 
+         - name: Python setup
+           uses: actions/python-setup@v5
+           with:
+              python-version: "3.10"
 
-   steps:
-     - name: Checkout repository
-       uses: actions/checkout@v4
+         - name: Install dependencies
+           run: |
+              python -m pip install --upgrade pip
+              python install -r requirements.txt
 
-     - name: Set up Python
-       uses: actions/setup-python@v5
-       with:
-         python-version: "3.10"
+         - name:  automation test Applications
+           run: python -m pytest -v
+    
 
-     - name: Install dependencies
-       run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+    build:
+        needs: test
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout Repository
+            uses: actions/checkout@v4
 
-     - name: Run automated tests
-       run: python -m pytest -v
+          - name: Build Docker image
+            run: docker build -t cicd-flask-app:latest .
+    
+    
